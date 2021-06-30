@@ -6,6 +6,8 @@ import io.netty.util.ByteProcessor;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Hezeming
@@ -17,7 +19,20 @@ public class ByteBufAPITest {
 
     public static void main(String[] args) {
 
+//        test1();
 
+        ByteBuf byteBuf1 = Unpooled.copiedBuffer("123456".getBytes(CharsetUtil.UTF_8));
+        // ridx: 0, widx: 6, cap: 6/6
+        outByteBuf(byteBuf1);
+
+        byte[] newByte = new byte[byteBuf1.readableBytes()];
+        byteBuf1.readBytes(newByte, 0, newByte.length);
+        System.out.println(Arrays.toString(byteBuf1.array()));
+        System.out.println(Arrays.toString(newByte));
+
+    }
+
+    public static void sliceAndCopyTest() {
         ByteBuf byteBuf = Unpooled.copiedBuffer("123456789123456789".getBytes(CharsetUtil.UTF_8));
 
         // 分片的效果，内存是共享的
@@ -41,8 +56,6 @@ public class ByteBufAPITest {
         log.info("equals : {}", byteBuf.getByte(0) == copy.getByte(0));
 
         log.info("<=========================== copy ===========================>");
-
-
     }
 
     public static void test1() {
